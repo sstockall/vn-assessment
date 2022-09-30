@@ -1,5 +1,5 @@
 import './App.css';
-import Users from './components/Users';
+import Characters from './components/Characters';
 
 function App() {
   return (
@@ -7,7 +7,7 @@ function App() {
       <header className='header'>
         <h1>Viral Nation React Assessment</h1>
       </header>
-      <Users />
+      <Characters />
     </main>
   );
 }
