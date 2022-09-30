@@ -19,6 +19,10 @@ const style = {
     form : {
         display: 'flex',
         flexDirection: 'column'
+    },
+    ctas : {
+        display: 'flex',
+        justifyContent: 'center'
     }
   };
 
@@ -76,7 +80,6 @@ function Users() {
         })
         characters.splice([char-1],1);
         setCharacters(characters);
-        console.log(characters)
         handleDeleteClose();
     }
   
@@ -89,56 +92,59 @@ function Users() {
             <Grid container>
                 {characters.map(character => { 
                     return  <Grid item xs={12} sm ={6} md={3} key={character.id}>
-                        <Character character={character} characters={characters}/>
+                        <Character character={character} style={style}/>
                     </Grid>
                 })}
             </Grid>  
-            <div className='new'>
-                <Button size='small' onClick={handleOpen}>New</Button>
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    >
-                    <Box sx={style.modal}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Add New Character
-                        </Typography>
-                        <form onSubmit={createChar} style={style.form}>
-                            <label>Name</label>
-                            <input name='name'/>
-                            <label>Species</label>
-                            <input name='species'/>
-                            <label>Status</label>
-                            <input name='status'/>
-                            <Button type='submit'>Create</Button>
-                        </form>
-                    </Box>
-                </Modal>
-                <Button size='small' onClick={handleDeleteOpen}>Delete</Button>
-                <Modal
-                    open={deleteOpen}
-                    onClose={handleDeleteClose}
-                    aria-labelledby="modal-modal-title"
-                    >
-                    <Box sx={style.modal}>
-                        <Typography variant="h6" component="h2">
-                            Choose Character
-                        </Typography>
-                        <form onSubmit={deleteChar}>
-                        <InputLabel>Character</InputLabel>
-                            <Select onChange={handleChange}  value={char}>
-                                {characters.map(char => {
-                                    return <MenuItem key ={char.name} value={char.id}>{char.name}</MenuItem>
-                                })}
-                            </Select >
-                            <Button type='submit'>Delete</Button>
-                        </form>
-                    </Box>
-                </Modal>
-                <Button size='small'>Update</Button>
-            </div>                         
+            <div className='ctas' style={style.ctas}>
+                <div className='new'>
+                    <Button size='small' onClick={handleOpen}>New</Button>
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        >
+                        <Box sx={style.modal}>
+                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Add New Character
+                            </Typography>
+                            <form onSubmit={createChar} style={style.form}>
+                                <label>Name</label>
+                                <input name='name'/>
+                                <label>Species</label>
+                                <input name='species'/>
+                                <label>Status</label>
+                                <input name='status'/>
+                                <Button type='submit'>Create</Button>
+                            </form>
+                        </Box>
+                    </Modal>
+                </div>
+                <div className='delete'>
+                    <Button size='small' onClick={handleDeleteOpen}>Delete</Button>
+                    <Modal
+                        open={deleteOpen}
+                        onClose={handleDeleteClose}
+                        aria-labelledby="modal-modal-title"
+                        >
+                        <Box sx={style.modal}>
+                            <Typography variant="h6" component="h2">
+                                Choose Character
+                            </Typography>
+                            <form onSubmit={deleteChar}>
+                                <InputLabel>Character</InputLabel>
+                                <Select onChange={handleChange}  value={char}>
+                                    {characters.map(char => {
+                                        return <MenuItem key ={char.name} value={char.id}>{char.name}</MenuItem>
+                                    })}
+                                </Select >
+                                <Button type='submit'>Delete</Button>
+                            </form>
+                        </Box>
+                    </Modal>
+                </div>
+            </div>                        
         </section>
     );
 }
