@@ -1,5 +1,4 @@
-import { Grid, Button, Typography, Box, Modal, MenuItem, FormControl, InputLabel } from '@mui/material';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Grid, Button, Typography, Box, Modal, MenuItem, Select, InputLabel, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Character from './Character';
@@ -12,7 +11,7 @@ const style = {
         transform: 'translate(-50%, -50%)',
         width: 400,
         bgcolor: 'background.paper',
-        border: '2px solid #000',
+        border: '1px solid #000',
         boxShadow: 24,
         p: 4,
     },
@@ -23,6 +22,22 @@ const style = {
     ctas : {
         display: 'flex',
         justifyContent: 'center'
+    },
+    char : {
+        margin: '0.5rem',
+        cursor: 'pointer'
+    },
+    select : {
+        marginBottom: '0.5rem'
+    },
+    button : {
+        marginTop: '0.5rem',
+        width: '7rem'
+    },
+    deleteButton: {
+        marginTop: '0.5rem',
+        marginLeft: '0.5rem',
+        width: '7rem'
     }
   };
 
@@ -32,17 +47,10 @@ function Users() {
     const [char, setChar] = useState("");
 
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const toggleOpen = () => !open ? setOpen(true) : setOpen(false);
 
     const [deleteOpen, setDeleteOpen] = useState(false);
-    const handleDeleteOpen = () => setDeleteOpen(true);
-    const handleDeleteClose = () => setDeleteOpen(false);
-
-
-    const [editOpen, setEditOpen] = useState(false);
-    const handleEditOpen = () => setEditOpen(true);
-    const handleEditClose = () => setEditOpen(false);
+    const toggleDelete = () => !deleteOpen ? setDeleteOpen(true) : setDeleteOpen(false);
 
     const getCharacters = () => {
         axios.get(URL)
@@ -64,7 +72,7 @@ function Users() {
         }
         characters.push(newChar);
         setCharacters(characters);
-        handleClose();
+        toggleOpen();
     }
 
     const handleChange = (e) => {
@@ -80,7 +88,7 @@ function Users() {
         })
         characters.splice([char-1],1);
         setCharacters(characters);
-        handleDeleteClose();
+        toggleDelete();
     }
   
     useEffect(() => {
@@ -98,10 +106,10 @@ function Users() {
             </Grid>  
             <div className='ctas' style={style.ctas}>
                 <div className='new'>
-                    <Button size='small' onClick={handleOpen}>New</Button>
+                    <Button style={style.button} variant='outlined' size='small' onClick={toggleOpen}>New</Button>
                     <Modal
                         open={open}
-                        onClose={handleClose}
+                        onClose={toggleOpen}
                         aria-labelledby="modal-modal-title"
                         aria-describedby="modal-modal-description"
                         >
@@ -110,36 +118,35 @@ function Users() {
                             Add New Character
                             </Typography>
                             <form onSubmit={createChar} style={style.form}>
-                                <label>Name</label>
-                                <input name='name'/>
-                                <label>Species</label>
-                                <input name='species'/>
-                                <label>Status</label>
-                                <input name='status'/>
-                                <Button type='submit'>Create</Button>
+                                <InputLabel>Name</InputLabel>
+                                <TextField size='small' name='name'/>
+                                <InputLabel>Species</InputLabel>
+                                <TextField size='small' name='species'/>
+                                <InputLabel>Status</InputLabel>
+                                <TextField size='small' name='status'/>
+                                <Button style={style.button} variant='outlined' type='submit'>Create</Button>
                             </form>
                         </Box>
                     </Modal>
                 </div>
                 <div className='delete'>
-                    <Button size='small' onClick={handleDeleteOpen}>Delete</Button>
+                    <Button style={style.deleteButton} variant='outlined' size='small' onClick={toggleDelete}>Delete</Button>
                     <Modal
                         open={deleteOpen}
-                        onClose={handleDeleteClose}
+                        onClose={toggleDelete}
                         aria-labelledby="modal-modal-title"
                         >
                         <Box sx={style.modal}>
                             <Typography variant="h6" component="h2">
-                                Choose Character
+                                Choose a Character
                             </Typography>
-                            <form onSubmit={deleteChar}>
-                                <InputLabel>Character</InputLabel>
-                                <Select onChange={handleChange}  value={char}>
+                            <form style={style.form} onSubmit={deleteChar}>
+                                <Select style={style.select} size='small' placeholder="Choose..." onChange={handleChange}  value={char}>
                                     {characters.map(char => {
                                         return <MenuItem key ={char.name} value={char.id}>{char.name}</MenuItem>
                                     })}
                                 </Select >
-                                <Button type='submit'>Delete</Button>
+                                <Button style={style.button} variant='outlined' type='submit'>Delete</Button>
                             </form>
                         </Box>
                     </Modal>
